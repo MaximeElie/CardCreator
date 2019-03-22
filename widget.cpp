@@ -28,15 +28,25 @@ void Widget::updateTextItems() {
     QRectF boundingRect;
 
     name->setPlainText(ui->lineEdit->text());
+    name->setFont(QFont("Arial", 20));
     boundingRect = name->boundingRect();
+    while(boundingRect.width()>280) {
+        name->setFont(QFont("Arial", name->font().pointSize()-1));
+        boundingRect = name->boundingRect();
+    }
     name->setPos(340-boundingRect.width()/2, 60-boundingRect.height()/2);
 
     flavor->setPlainText(ui->textEdit->toPlainText());
     flavor->setTextWidth(-1);
+    flavor->setFont(QFont("Arial", 40));
     boundingRect = flavor->boundingRect();
     if(boundingRect.width()>480) {
         flavor->setTextWidth(480);
         boundingRect = flavor->boundingRect();
+        while(boundingRect.height()>190) {
+            flavor->setFont(QFont("Arial", flavor->font().pointSize()-1));
+            boundingRect = flavor->boundingRect();
+        }
     }
     flavor->setPos(340-boundingRect.width()/2, 688-boundingRect.height()/2);
 }
