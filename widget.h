@@ -24,21 +24,31 @@ public:
     ~Widget();
 
 public slots:
+    void updateMana();
     void updateTextItems();
-    void updateScroll();
     void openArt();
+    void updateScroll();
+    void openRarityAndSetSymbol();
+    void save();
 
 private:
-    Ui::Widget *ui;
-    QGraphicsScene *scene;
-    QGraphicsPixmapItem *art;
-    QGraphicsPixmapItem *background;
+    Ui::Widget* ui;
+    QGraphicsScene* scene;
+    QGraphicsPixmapItem* background;
+    QMap<QString, QPixmap> manaSymbolPixmaps;
+    QList<QGraphicsPixmapItem*> manaSymbols;
+    QGraphicsPixmapItem* picture;
     QMap<QString, QPixmap> scrollSymbolPixmaps;
     QList<QGraphicsPixmapItem*> scrollSymbols;
-    QGraphicsTextItem *name;
+    QGraphicsPixmapItem* rarityAndSetSymbol;
+    QGraphicsTextItem* actionPoints;
+    QGraphicsTextItem* name;
     QList<QGraphicsTextItem*> scrollValues;
     QGraphicsTextItem* type;
     QGraphicsTextItem* flavor;
+    QGraphicsTextItem* illustratorName;
+    QGraphicsTextItem* setNumber;
+    QGraphicsTextItem* goldCost;
 };
 
 #endif // WIDGET_H
