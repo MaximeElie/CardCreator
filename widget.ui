@@ -26,7 +26,7 @@
    <cursorShape>ArrowCursor</cursorShape>
   </property>
   <property name="windowTitle">
-   <string>Widget</string>
+   <string>Card Creator</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="spacing">
@@ -94,16 +94,42 @@
            <property name="minimumSize">
             <size>
              <width>50</width>
-             <height>0</height>
+             <height>25</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>50</width>
-             <height>16777215</height>
+             <height>25</height>
             </size>
            </property>
           </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_9">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_29">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
          </item>
          <item>
           <spacer name="horizontalSpacer_27">
@@ -150,13 +176,13 @@
              <property name="minimumSize">
               <size>
                <width>50</width>
-               <height>0</height>
+               <height>25</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>50</width>
-               <height>16777215</height>
+               <height>25</height>
               </size>
              </property>
             </widget>
@@ -166,13 +192,13 @@
              <property name="minimumSize">
               <size>
                <width>50</width>
-               <height>0</height>
+               <height>25</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>50</width>
-               <height>16777215</height>
+               <height>25</height>
               </size>
              </property>
             </widget>
@@ -182,13 +208,13 @@
              <property name="minimumSize">
               <size>
                <width>50</width>
-               <height>0</height>
+               <height>25</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>50</width>
-               <height>16777215</height>
+               <height>25</height>
               </size>
              </property>
             </widget>
@@ -197,6 +223,18 @@
          </item>
          <item>
           <widget class="Line" name="line">
+           <property name="minimumSize">
+            <size>
+             <width>10</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>10</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="orientation">
             <enum>Qt::Vertical</enum>
            </property>
@@ -234,13 +272,13 @@
              <property name="minimumSize">
               <size>
                <width>50</width>
-               <height>0</height>
+               <height>25</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>50</width>
-               <height>16777215</height>
+               <height>25</height>
               </size>
              </property>
             </widget>
@@ -250,13 +288,13 @@
              <property name="minimumSize">
               <size>
                <width>50</width>
-               <height>0</height>
+               <height>25</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>50</width>
-               <height>16777215</height>
+               <height>25</height>
               </size>
              </property>
             </widget>
@@ -266,13 +304,13 @@
              <property name="minimumSize">
               <size>
                <width>50</width>
-               <height>0</height>
+               <height>25</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>50</width>
-               <height>16777215</height>
+               <height>25</height>
               </size>
              </property>
             </widget>
@@ -281,6 +319,18 @@
          </item>
          <item>
           <widget class="Line" name="line_2">
+           <property name="minimumSize">
+            <size>
+             <width>10</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>10</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="orientation">
             <enum>Qt::Vertical</enum>
            </property>
@@ -304,13 +354,13 @@
              <property name="minimumSize">
               <size>
                <width>50</width>
-               <height>0</height>
+               <height>25</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>50</width>
-               <height>16777215</height>
+               <height>25</height>
               </size>
              </property>
             </widget>
@@ -365,6 +415,23 @@
          </item>
          <item>
           <widget class="QLineEdit" name="name">
+           <property name="minimumSize">
+            <size>
+             <width>350</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>350</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="inputMask">
             <string/>
            </property>
@@ -372,7 +439,39 @@
             <string/>
            </property>
            <property name="placeholderText">
-            <string>name</string>
+            <string>Name</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_31">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="picture">
+           <property name="minimumSize">
+            <size>
+             <width>150</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>150</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Open Art</string>
            </property>
           </widget>
          </item>
@@ -393,59 +492,6 @@
        </item>
        <item>
         <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
-         <property name="spacing">
-          <number>6</number>
-         </property>
-         <item>
-          <spacer name="horizontalSpacer_4">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QPushButton" name="picture">
-           <property name="text">
-            <string>Open Art</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_3">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_6">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
@@ -486,13 +532,13 @@
              <property name="minimumSize">
               <size>
                <width>71</width>
-               <height>0</height>
+               <height>25</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>71</width>
-               <height>16777215</height>
+               <height>25</height>
               </size>
              </property>
             </widget>
@@ -526,13 +572,13 @@
              <property name="minimumSize">
               <size>
                <width>71</width>
-               <height>0</height>
+               <height>25</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>71</width>
-               <height>16777215</height>
+               <height>25</height>
               </size>
              </property>
             </widget>
@@ -566,13 +612,13 @@
              <property name="minimumSize">
               <size>
                <width>71</width>
-               <height>0</height>
+               <height>25</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>71</width>
-               <height>16777215</height>
+               <height>25</height>
               </size>
              </property>
             </widget>
@@ -606,13 +652,13 @@
              <property name="minimumSize">
               <size>
                <width>71</width>
-               <height>0</height>
+               <height>25</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>71</width>
-               <height>16777215</height>
+               <height>25</height>
               </size>
              </property>
             </widget>
@@ -646,13 +692,13 @@
              <property name="minimumSize">
               <size>
                <width>71</width>
-               <height>0</height>
+               <height>25</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>71</width>
-               <height>16777215</height>
+               <height>25</height>
               </size>
              </property>
             </widget>
@@ -686,13 +732,13 @@
              <property name="minimumSize">
               <size>
                <width>71</width>
-               <height>0</height>
+               <height>25</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>71</width>
-               <height>16777215</height>
+               <height>25</height>
               </size>
              </property>
             </widget>
@@ -747,8 +793,25 @@
          </item>
          <item>
           <widget class="QLineEdit" name="superType">
+           <property name="minimumSize">
+            <size>
+             <width>250</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>250</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
            <property name="placeholderText">
-            <string>supertype</string>
+            <string>Supertype</string>
            </property>
           </widget>
          </item>
@@ -761,11 +824,28 @@
          </item>
          <item>
           <widget class="QLineEdit" name="subType">
+           <property name="minimumSize">
+            <size>
+             <width>250</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>250</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string/>
            </property>
            <property name="placeholderText">
-            <string>subtype</string>
+            <string>Subtype</string>
            </property>
           </widget>
          </item>
@@ -817,8 +897,25 @@
          </item>
          <item>
           <widget class="QTextEdit" name="flavorText">
+           <property name="minimumSize">
+            <size>
+             <width>400</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>400</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+            </font>
+           </property>
            <property name="placeholderText">
-            <string>flavor text</string>
+            <string>Flavor text</string>
            </property>
           </widget>
          </item>
@@ -876,6 +973,18 @@
            </item>
            <item>
             <widget class="QPushButton" name="rarityAndSetSymbol">
+             <property name="minimumSize">
+              <size>
+               <width>150</width>
+               <height>25</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>100</width>
+               <height>25</height>
+              </size>
+             </property>
              <property name="text">
               <string>rarity / set symbol</string>
              </property>
@@ -907,6 +1016,18 @@
            </item>
            <item>
             <widget class="QLineEdit" name="illustratorName">
+             <property name="minimumSize">
+              <size>
+               <width>200</width>
+               <height>25</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>200</width>
+               <height>25</height>
+              </size>
+             </property>
              <property name="placeholderText">
               <string>Illustrator name</string>
              </property>
@@ -973,13 +1094,13 @@
                <property name="minimumSize">
                 <size>
                  <width>50</width>
-                 <height>0</height>
+                 <height>25</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
                  <width>50</width>
-                 <height>16777215</height>
+                 <height>25</height>
                 </size>
                </property>
                <property name="minimum">
@@ -1011,13 +1132,13 @@
                <property name="minimumSize">
                 <size>
                  <width>50</width>
-                 <height>0</height>
+                 <height>25</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
                  <width>50</width>
-                 <height>16777215</height>
+                 <height>25</height>
                 </size>
                </property>
                <property name="minimum">
@@ -1059,13 +1180,13 @@
              <property name="minimumSize">
               <size>
                <width>50</width>
-               <height>0</height>
+               <height>25</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>50</width>
-               <height>16777215</height>
+               <height>25</height>
               </size>
              </property>
             </widget>
@@ -1086,6 +1207,19 @@
           </spacer>
          </item>
         </layout>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_6">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
        <item>
         <spacer name="verticalSpacer_7">
@@ -1116,7 +1250,51 @@
           </spacer>
          </item>
          <item>
+          <widget class="QPushButton" name="options">
+           <property name="minimumSize">
+            <size>
+             <width>200</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>200</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Options</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_30">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
           <widget class="QPushButton" name="save">
+           <property name="minimumSize">
+            <size>
+             <width>200</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>200</width>
+             <height>50</height>
+            </size>
+           </property>
            <property name="text">
             <string>Save</string>
            </property>

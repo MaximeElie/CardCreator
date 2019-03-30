@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Positions</class>
+ <widget class="QWidget" name="Positions">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Positions</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>50</number>
+     </property>
+     <property name="rightMargin">
+      <number>50</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_17"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_18"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_19"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_20"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_11">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>50</number>
+     </property>
+     <property name="rightMargin">
+      <number>50</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label_11">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_41"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_42"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_43"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_44"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>50</number>
+     </property>
+     <property name="rightMargin">
+      <number>50</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_9"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_10"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_11"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_12"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_7">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>50</number>
+     </property>
+     <property name="rightMargin">
+      <number>50</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_25"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_26"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_27"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_28"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_12">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>50</number>
+     </property>
+     <property name="rightMargin">
+      <number>50</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label_12">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_45"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_46"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_47"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_48"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>50</number>
+     </property>
+     <property name="rightMargin">
+      <number>50</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_2"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_3"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_4"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_6">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>50</number>
+     </property>
+     <property name="rightMargin">
+      <number>50</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_21"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_22"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_23"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_24"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_10">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>50</number>
+     </property>
+     <property name="rightMargin">
+      <number>50</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label_10">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_37"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_38"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_39"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_40"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_9">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>50</number>
+     </property>
+     <property name="rightMargin">
+      <number>50</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_33"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_34"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_35"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_36"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_8">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>50</number>
+     </property>
+     <property name="rightMargin">
+      <number>50</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_29"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_30"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_31"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_32"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>50</number>
+     </property>
+     <property name="rightMargin">
+      <number>50</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_13"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_14"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_15"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_16"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="leftMargin">
+      <number>50</number>
+     </property>
+     <property name="rightMargin">
+      <number>50</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_5"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_6"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_7"/>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_8"/>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

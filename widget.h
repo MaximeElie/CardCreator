@@ -7,48 +7,64 @@
 #include <QSpinBox>
 #include <QFileDialog>
 #include <QDir>
-#include <QMessageBox>
 
+#include "options.h"
 #include "constants.h"
 
 namespace Ui {
-class Widget;
+    class Widget;
 }
 
-class Widget : public QWidget
-{
+class Widget : public QWidget {
+
     Q_OBJECT
 
 public:
     explicit Widget(QWidget *parent = nullptr);
     ~Widget();
+    void updateBackground();
+    void updateManaSymbolPixmaps();
+    void updatescrollSymbolPixmaps();
+    void updateFont();
+    void updateCard();
+    void updatePicture();
+    void updateRarityAndSetSymbol();
 
 public slots:
+    void updateAll();
+    void updateActionPoints();
     void updateMana();
-    void updateTextItems();
-    void openArt();
+    void updateName();
+    void openPicture();
     void updateScroll();
+    void updateType();
+    void updateFlavorText();
     void openRarityAndSetSymbol();
+    void updateIllustratorName();
+    void updateSetNumber();
+    void updateGoldCost();
+    void options();
     void save();
 
 private:
     Ui::Widget* ui;
     QGraphicsScene* scene;
     QGraphicsPixmapItem* background;
+    QGraphicsTextItem* actionPoints;
     QMap<QString, QPixmap> manaSymbolPixmaps;
     QList<QGraphicsPixmapItem*> manaSymbols;
+    QGraphicsTextItem* name;
     QGraphicsPixmapItem* picture;
     QMap<QString, QPixmap> scrollSymbolPixmaps;
     QList<QGraphicsPixmapItem*> scrollSymbols;
-    QGraphicsPixmapItem* rarityAndSetSymbol;
-    QGraphicsTextItem* actionPoints;
-    QGraphicsTextItem* name;
     QList<QGraphicsTextItem*> scrollValues;
     QGraphicsTextItem* type;
     QGraphicsTextItem* flavor;
+    QGraphicsPixmapItem* rarityAndSetSymbol;
     QGraphicsTextItem* illustratorName;
     QGraphicsTextItem* setNumber;
     QGraphicsTextItem* goldCost;
+    Options* optionsWindow;
 };
 
 #endif // WIDGET_H

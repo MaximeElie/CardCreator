@@ -1,32 +1,16 @@
 #include "widget.h"
 #include "ui_widget.h"
 
-#include <iostream>
+Widget::Widget(QWidget *parent) : QWidget(parent), ui(new Ui::Widget) {
 
-Widget::Widget(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::Widget)
-{
-
-    scrollSymbolPixmaps.insert("attack_power", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/attack_power.png").scaled(Constants::scrollSymbolSize())));
-    scrollSymbolPixmaps.insert("health", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/health.png").scaled(Constants::scrollSymbolSize())));
-    scrollSymbolPixmaps.insert("movement", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/movement.png").scaled(Constants::scrollSymbolSize())));
-    scrollSymbolPixmaps.insert("ranged_attack", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/ranged_attack.png").scaled(Constants::scrollSymbolSize())));
-    scrollSymbolPixmaps.insert("magic_attack", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/magic_attack.png").scaled(Constants::scrollSymbolSize())));
-    scrollSymbolPixmaps.insert("defense", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/defense.png").scaled(Constants::scrollSymbolSize())));
-
-    manaSymbolPixmaps.insert("wood", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/wood.png").scaled(Constants::manaSymbolSize())));
-    manaSymbolPixmaps.insert("mystic_node", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/mystic_node.png").scaled(Constants::manaSymbolSize())));
-    manaSymbolPixmaps.insert("weapon_forge", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/weapon_forge.png").scaled(Constants::manaSymbolSize())));
-    manaSymbolPixmaps.insert("inferno", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/inferno.png").scaled(Constants::manaSymbolSize())));
-    manaSymbolPixmaps.insert("darkness", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/darkness.png").scaled(Constants::manaSymbolSize())));
-    manaSymbolPixmaps.insert("stone_quarry", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/stone_quarry.png").scaled(Constants::manaSymbolSize())));
-    manaSymbolPixmaps.insert("colorless", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/colorless.png").scaled(Constants::manaSymbolSize())));
+    updateManaSymbolPixmaps();
+    updatescrollSymbolPixmaps();
 
     scene = new QGraphicsScene(this);
     picture = scene->addPixmap(QPixmap());
     rarityAndSetSymbol = scene->addPixmap(QPixmap());
-    background = scene->addPixmap(QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/background.png").scaled(Constants::cardSize())));
+    background = scene->addPixmap(QPixmap());
+    updateBackground();
     actionPoints = scene->addText("");
     name = scene->addText("");
     type = scene->addText("");
@@ -38,9 +22,9 @@ Widget::Widget(QWidget *parent) :
     ui->setupUi(this);
     ui->graphicsView->setScene(scene);
 
-    updateTextItems();
+    updateCard();
 
-    connect(ui->actionPoints, SIGNAL(valueChanged(int)), this, SLOT(updateTextItems()));
+    connect(ui->actionPoints, SIGNAL(valueChanged(int)), this, SLOT(updateActionPoints()));
 
     connect(ui->wood, SIGNAL(valueChanged(int)), this, SLOT(updateMana()));
     connect(ui->mysticNode, SIGNAL(valueChanged(int)), this, SLOT(updateMana()));
@@ -50,9 +34,9 @@ Widget::Widget(QWidget *parent) :
     connect(ui->stoneQuarry, SIGNAL(valueChanged(int)), this, SLOT(updateMana()));
     connect(ui->colorless, SIGNAL(valueChanged(int)), this, SLOT(updateMana()));
 
-    connect(ui->name, SIGNAL(textChanged(QString)), this, SLOT(updateTextItems()));
+    connect(ui->name, SIGNAL(textChanged(QString)), this, SLOT(updateName()));
 
-    connect(ui->picture, SIGNAL(clicked()), this, SLOT(openArt()));
+    connect(ui->picture, SIGNAL(clicked()), this, SLOT(openPicture()));
 
     connect(ui->attackPower, SIGNAL(valueChanged(int)), this, SLOT(updateScroll()));
     connect(ui->health, SIGNAL(valueChanged(int)), this, SLOT(updateScroll()));
@@ -61,30 +45,113 @@ Widget::Widget(QWidget *parent) :
     connect(ui->magicAttack, SIGNAL(valueChanged(int)), this, SLOT(updateScroll()));
     connect(ui->defense, SIGNAL(valueChanged(int)), this, SLOT(updateScroll()));
 
-    connect(ui->superType, SIGNAL(textChanged(QString)), this, SLOT(updateTextItems()));
-    connect(ui->subType, SIGNAL(textChanged(QString)), this, SLOT(updateTextItems()));
+    connect(ui->superType, SIGNAL(textChanged(QString)), this, SLOT(updateType()));
+    connect(ui->subType, SIGNAL(textChanged(QString)), this, SLOT(updateType()));
 
-    connect(ui->flavorText, SIGNAL(textChanged()), this, SLOT(updateTextItems()));
+    connect(ui->flavorText, SIGNAL(textChanged()), this, SLOT(updateFlavorText()));
 
     connect(ui->rarityAndSetSymbol, SIGNAL(clicked()), this, SLOT(openRarityAndSetSymbol()));
-    connect(ui->illustratorName, SIGNAL(textChanged(QString)), this, SLOT(updateTextItems()));
-    connect(ui->setNumber, SIGNAL(valueChanged(int)), this, SLOT(updateTextItems()));
-    connect(ui->setNumberTotal, SIGNAL(valueChanged(int)), this, SLOT(updateTextItems()));
-    connect(ui->goldCost, SIGNAL(valueChanged(int)), this, SLOT(updateTextItems()));
+    connect(ui->illustratorName, SIGNAL(textChanged(QString)), this, SLOT(updateIllustratorName()));
+    connect(ui->setNumber, SIGNAL(valueChanged(int)), this, SLOT(updateSetNumber()));
+    connect(ui->setNumberTotal, SIGNAL(valueChanged(int)), this, SLOT(updateSetNumber()));
+    connect(ui->goldCost, SIGNAL(valueChanged(int)), this, SLOT(updateGoldCost()));
 
+    connect(ui->options, SIGNAL(clicked()), this, SLOT(options()));
     connect(ui->save, SIGNAL(clicked()), this, SLOT(save()));
 }
 
-Widget::~Widget()
-{
+Widget::~Widget() {
     delete ui;
 }
 
-void Widget::updateMana() {
-    while(!manaSymbols.isEmpty()) {
-        scene->removeItem(manaSymbols.back());
-        manaSymbols.pop_back();
+void Widget::updateAll() {
+
+    updateBackground();
+    updateManaSymbolPixmaps();
+    updatescrollSymbolPixmaps();
+    updateFont();
+    updateCard();
+}
+
+void Widget::updateBackground() {
+    background->setPixmap(QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/background.png").scaled(Constants::cardSize())));
+}
+
+void Widget::updateManaSymbolPixmaps() {
+
+    manaSymbolPixmaps.clear();
+
+    manaSymbolPixmaps.insert("wood", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/wood.png").scaled(Constants::manaSymbolSize())));
+    manaSymbolPixmaps.insert("mystic_node", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/mystic_node.png").scaled(Constants::manaSymbolSize())));
+    manaSymbolPixmaps.insert("weapon_forge", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/weapon_forge.png").scaled(Constants::manaSymbolSize())));
+    manaSymbolPixmaps.insert("inferno", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/inferno.png").scaled(Constants::manaSymbolSize())));
+    manaSymbolPixmaps.insert("darkness", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/darkness.png").scaled(Constants::manaSymbolSize())));
+    manaSymbolPixmaps.insert("stone_quarry", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/stone_quarry.png").scaled(Constants::manaSymbolSize())));
+    manaSymbolPixmaps.insert("colorless", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/colorless.png").scaled(Constants::manaSymbolSize())));
+}
+
+void Widget::updatescrollSymbolPixmaps() {
+
+    scrollSymbolPixmaps.clear();
+
+    scrollSymbolPixmaps.insert("attack_power", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/attack_power.png").scaled(Constants::scrollSymbolSize())));
+    scrollSymbolPixmaps.insert("health", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/health.png").scaled(Constants::scrollSymbolSize())));
+    scrollSymbolPixmaps.insert("movement", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/movement.png").scaled(Constants::scrollSymbolSize())));
+    scrollSymbolPixmaps.insert("ranged_attack", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/ranged_attack.png").scaled(Constants::scrollSymbolSize())));
+    scrollSymbolPixmaps.insert("magic_attack", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/magic_attack.png").scaled(Constants::scrollSymbolSize())));
+    scrollSymbolPixmaps.insert("defense", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/defense.png").scaled(Constants::scrollSymbolSize())));
+}
+
+void Widget::updateFont() { /////////////////////////////////////////////// faire
+
+}
+
+void Widget::updateCard() {
+    updateActionPoints();
+    updateMana();
+    updateName();
+    updatePicture();
+    updateScroll();
+    updateType();
+    updateFlavorText();
+    updateRarityAndSetSymbol();
+    updateIllustratorName();
+    updateSetNumber();
+    updateGoldCost();
+}
+
+void updateText(QGraphicsTextItem* item, QString text, QRect rect, Qt::Alignment alignment) {
+
+    QRectF boundingRect;
+
+    item->setPlainText(text);
+    item->setFont(QFont("Arial", 100));
+    boundingRect = item->boundingRect();
+    while(boundingRect.width()>rect.width() || boundingRect.height()>rect.height()) {
+        item->setFont(QFont("Arial", item->font().pointSize()-1));
+        boundingRect = item->boundingRect();
     }
+
+    int posX;
+
+    switch(alignment) {
+        case Qt::AlignLeft: posX = rect.left(); break;
+        case Qt::AlignCenter: posX = rect.center().x() - boundingRect.width()/2; break;
+        case Qt::AlignRight: posX = rect.right() - boundingRect.width(); break;
+        default: posX = rect.center().x() - boundingRect.width()/2;;
+    }
+
+    item->setPos(posX, rect.center().y() - boundingRect.height()/2);
+}
+
+void Widget::updateActionPoints() {
+    updateText(actionPoints, QString::number(ui->actionPoints->value()), Constants::actionPointsRect(), Qt::AlignCenter);
+}
+
+void Widget::updateMana() {///////////////////////////////////////////////////
+
+    for(QGraphicsPixmapItem* item : manaSymbols) scene->removeItem(item);
+    manaSymbols.clear();
 
     for(int i = 0 ; i < ui->wood->value() ; i++) manaSymbols.append(scene->addPixmap(manaSymbolPixmaps["wood"]));
     for(int i = 0 ; i < ui->mysticNode->value() ; i++) manaSymbols.append(scene->addPixmap(manaSymbolPixmaps["mystic_node"]));
@@ -104,101 +171,29 @@ void Widget::updateMana() {
 
 }
 
-void Widget::updateTextItems() {
-    QRectF boundingRect;
-
-    actionPoints->setPlainText(QString::number(ui->actionPoints->value()));
-    actionPoints->setFont(QFont("Arial", 50));
-    boundingRect = actionPoints->boundingRect();
-    while(boundingRect.width()>Constants::actionPointsRect().width() || boundingRect.height()>Constants::actionPointsRect().height()) {
-        actionPoints->setFont(QFont("Arial", actionPoints->font().pointSize()-1));
-        boundingRect = actionPoints->boundingRect();
-    }
-    actionPoints->setPos(Constants::actionPointsRect().center().x() - boundingRect.width()/2, Constants::actionPointsRect().center().y() - boundingRect.height()/2);
-
-    name->setPlainText(ui->name->text());
-    name->setFont(QFont("Arial", 30));
-    boundingRect = name->boundingRect();
-    while(boundingRect.width()>Constants::nameRect().width() || boundingRect.height()>Constants::nameRect().height()) {
-        name->setFont(QFont("Arial", name->font().pointSize()-1));
-        boundingRect = name->boundingRect();
-    }
-    name->setPos(Constants::nameRect().center().x() - boundingRect.width()/2, Constants::nameRect().center().y() - boundingRect.height()/2);
-
-
-    QString superType = ui->superType->text();
-    QString subType = ui->subType->text();
-    QString typeStr = (superType.isEmpty() || subType.isEmpty()) ? superType+subType : superType + " - " + subType;
-    type->setPlainText(typeStr);
-    type->setFont(QFont("Arial", 20));
-    boundingRect = type->boundingRect();
-    while(boundingRect.width()>Constants::typeRect().width() || boundingRect.height()>Constants::typeRect().height()) {
-        type->setFont(QFont("Arial", type->font().pointSize()-1));
-        boundingRect = type->boundingRect();
-    }
-    type->setPos(Constants::typeRect().center().x() - boundingRect.width()/2, Constants::typeRect().center().y() - boundingRect.height()/2);
-
-
-    flavor->setPlainText(ui->flavorText->toPlainText());
-    flavor->setTextWidth(-1);
-    flavor->setFont(QFont("Arial", 40));
-    boundingRect = flavor->boundingRect();
-    if(boundingRect.width()>Constants::flavorTextRect().width()) {
-        flavor->setTextWidth(Constants::flavorTextRect().width());
-        boundingRect = flavor->boundingRect();
-        while(boundingRect.height()>Constants::flavorTextRect().height()) {
-            flavor->setFont(QFont("Arial", flavor->font().pointSize()-1));
-            boundingRect = flavor->boundingRect();
-        }
-    }
-    flavor->setPos(Constants::flavorTextRect().center().x() - boundingRect.width()/2, Constants::flavorTextRect().center().y() - boundingRect.height()/2);
-
-    illustratorName->setPlainText(ui->illustratorName->text());
-    illustratorName->setFont(QFont("Arial", 50));
-    boundingRect = illustratorName->boundingRect();
-    while(boundingRect.width()>Constants::illustratorRect().width() || boundingRect.height()>Constants::illustratorRect().height()) {
-        illustratorName->setFont(QFont("Arial", illustratorName->font().pointSize()-1));
-        boundingRect = illustratorName->boundingRect();
-    }
-    illustratorName->setPos(Constants::illustratorRect().left(), Constants::illustratorRect().center().y() - boundingRect.height()/2);
-
-    ui->setNumber->setMaximum(ui->setNumberTotal->value());
-    setNumber->setPlainText(QString::number(ui->setNumber->value()) + " / " + QString::number(ui->setNumberTotal->value()));
-    setNumber->setFont(QFont("Arial", 50));
-    boundingRect = setNumber->boundingRect();
-    while(boundingRect.width()>Constants::setNumberRect().width() || boundingRect.height()>Constants::setNumberRect().height()) {
-        setNumber->setFont(QFont("Arial", setNumber->font().pointSize()-1));
-        boundingRect = setNumber->boundingRect();
-    }
-    setNumber->setPos(Constants::setNumberRect().right() - boundingRect.width(), Constants::setNumberRect().center().y() - boundingRect.height()/2);
-
-    goldCost->setPlainText(QString::number(ui->goldCost->value()));
-    goldCost->setFont(QFont("Arial", 50));
-    boundingRect = goldCost->boundingRect();
-    while(boundingRect.width()>Constants::goldCostRect().width() || boundingRect.height()>Constants::goldCostRect().height()) {
-        goldCost->setFont(QFont("Arial", goldCost->font().pointSize()-1));
-        boundingRect = goldCost->boundingRect();
-    }
-    goldCost->setPos(Constants::goldCostRect().center().x() - boundingRect.width()/2, Constants::goldCostRect().center().y() - boundingRect.height()/2);
+void Widget::updateName() {
+    updateText(name, ui->name->text(), Constants::nameRect(), Qt::AlignCenter);
 }
 
-void Widget::openArt() {
+void Widget::openPicture() {
 
-    QString artFileName = QFileDialog::getOpenFileName(this, "Open Art", QDir::homePath(), "Images (*.png *.jpg *.jpeg *.bmp *.gif)");
-    if(!artFileName.isEmpty()) {
-        picture->setPixmap(QPixmap::fromImage(QImage(artFileName).scaled(Constants::pictureRect().size())));
-        picture->setPos(Constants::pictureRect().topLeft());
+    QString fileName = QFileDialog::getOpenFileName(this, "Open Picture", QDir::homePath(), "Images (*.png *.jpg *.jpeg *.bmp *.gif)");
+    if(!fileName.isEmpty()) {
+        picture->setPixmap(QPixmap::fromImage(QImage(fileName).scaled(Constants::pictureRect().size())));
+        updatePicture();
     }
 }
 
-void Widget::updateScroll() {
+void Widget::updatePicture() {
+    picture->setPos(Constants::pictureRect().topLeft());
+}
 
-    while(!scrollSymbols.isEmpty()) {
-        scene->removeItem(scrollSymbols.back());
-        scene->removeItem(scrollValues.back());
-        scrollSymbols.pop_back();
-        scrollValues.pop_back();
-    }
+void Widget::updateScroll() {//////////////////////////////////////////////////
+
+    for(QGraphicsPixmapItem* item : scrollSymbols) scene->removeItem(item);
+    manaSymbols.clear();
+    for(QGraphicsTextItem* item : scrollValues) scene->removeItem(item);
+    manaSymbols.clear();
 
     if(ui->attackPower->value()>0) {
         scrollSymbols.append(scene->addPixmap(scrollSymbolPixmaps["attack_power"]));
@@ -225,6 +220,8 @@ void Widget::updateScroll() {
         scrollValues.append(scene->addText(QString::number(ui->defense->value())));
     }
 
+    if(scrollSymbols.isEmpty()) return;
+
     int symbolCaseWidth = Constants::scrollRect().width()/scrollSymbols.count();
     int firstSymbolLeft = Constants::scrollRect().left() + symbolCaseWidth/2 - Constants::scrollSymbolAndNumberSize().width()/2;
 
@@ -232,21 +229,72 @@ void Widget::updateScroll() {
         int symbolX = firstSymbolLeft + i*symbolCaseWidth;
         int symbolY = Constants::scrollRect().y() + (Constants::scrollRect().height()-Constants::scrollSymbolSize().height())/2;
         scrollSymbols[i]->setPos(symbolX,symbolY);
-        scrollValues[i]->setFont(QFont("Arial", 15));////////////////////////////////////////////////////////////////////////// taille police auto
-        scrollValues[i]->setPos(symbolX+Constants::scrollSymbolSize().width(),symbolY); /////////////////////////////////////////////////////////////////////////////////////////////////////////////////// position y auto
+        scrollValues[i]->setFont(QFont("Arial", 15));////////////////////////////////////////////////////////////////////////////////////////////////////////// taille police auto
+        scrollValues[i]->setPos(symbolX+Constants::scrollSymbolSize().width(),symbolY); ////////////////////////////////////////////////////////////////////// position y auto
     }
+}
+
+void Widget::updateType() {
+    QString superTypeStr = ui->superType->text();
+    QString subTypeStr = ui->subType->text();
+    QString typeStr = (superTypeStr.isEmpty() || subTypeStr.isEmpty()) ? superTypeStr+subTypeStr : superTypeStr + " - " + subTypeStr;
+    updateText(type, typeStr, Constants::typeRect(), Qt::AlignCenter);
+}
+
+void Widget::updateFlavorText() {/////////////////////////////////// centrer
+
+    QRectF boundingRect;
+
+    flavor->setPlainText(ui->flavorText->toPlainText());
+    flavor->setTextWidth(-1);
+    flavor->setFont(QFont("Arial", 40));
+    boundingRect = flavor->boundingRect();
+    if(boundingRect.width()>Constants::flavorTextRect().width()) {
+        flavor->setTextWidth(Constants::flavorTextRect().width());
+        boundingRect = flavor->boundingRect();
+        while(boundingRect.height()>Constants::flavorTextRect().height()) {
+            flavor->setFont(QFont("Arial", flavor->font().pointSize()-1));
+            boundingRect = flavor->boundingRect();
+        }
+    }
+    flavor->setPos(Constants::flavorTextRect().center().x() - boundingRect.width()/2, Constants::flavorTextRect().center().y() - boundingRect.height()/2);
 }
 
 void Widget::openRarityAndSetSymbol() {
-    QString file = QFileDialog::getOpenFileName(this, "Open set", QDir::homePath(), "Images (*.png *.jpg *.jpeg *.bmp *.gif)");
-    if(!file.isEmpty()) {
-        rarityAndSetSymbol->setPixmap(QPixmap::fromImage(QImage(file).scaled(Constants::raritySetSymbolRect().size())));
-        rarityAndSetSymbol->setPos(Constants::raritySetSymbolRect().topLeft());
+    QString fileName = QFileDialog::getOpenFileName(this, "Open set", QDir::homePath(), "Images (*.png *.jpg *.jpeg *.bmp *.gif)");
+    if(!fileName.isEmpty()) {
+        rarityAndSetSymbol->setPixmap(QPixmap::fromImage(QImage(fileName).scaled(Constants::raritySetSymbolRect().size())));
+        updateRarityAndSetSymbol();
     }
 }
 
+void Widget::updateRarityAndSetSymbol() {
+    rarityAndSetSymbol->setPos(Constants::raritySetSymbolRect().topLeft());
+}
+
+void Widget::updateIllustratorName() {
+    updateText(illustratorName, ui->illustratorName->text(), Constants::illustratorRect(), Qt::AlignLeft);
+}
+
+void Widget::updateSetNumber() {
+    ui->setNumber->setMaximum(ui->setNumberTotal->value());
+    QString setNumberStr = QString::number(ui->setNumber->value()) + " / " + QString::number(ui->setNumberTotal->value());
+    updateText(setNumber, setNumberStr, Constants::setNumberRect(), Qt::AlignRight);
+}
+
+void Widget::updateGoldCost() {
+    updateText(goldCost, QString::number(ui->goldCost->value()), Constants::goldCostRect(), Qt::AlignCenter);
+}
+
+void Widget::options() {////////////////////////////////////////////
+    optionsWindow = new Options(this);
+    connect(optionsWindow, SIGNAL(optionsClosed()), this, SLOT(updateAll()));
+    optionsWindow->show();
+    optionsWindow->activateWindow();
+}
+
 void Widget::save() {
-    QString fileName = QFileDialog::getSaveFileName(this, "Save Scene", "", "Image (*.png)");
+    QString fileName = QFileDialog::getSaveFileName(this, "Save Scene", ui->name->text(), "Image (*.png)");
     QPixmap pixMap = ui->graphicsView->grab();;
     ui->graphicsView->grab();
     pixMap.save(fileName);

@@ -21,7 +21,7 @@ QSizeF Constants::_cardSizeScaled;
 
 void Constants::init() {
     _cardSize = QSizeF(850,1100);
-    _actionPointsRect = QRectF(115, 40, 70, 40);
+    _actionPointsRect = QRectF(115, 32, 70, 56);
     _manaRect = QRectF(210, 20, 620, 60);
     _nameRect = QRectF(200, 83, 450, 55);
     _pictureRect = QRectF(72, 145, 707, 392);

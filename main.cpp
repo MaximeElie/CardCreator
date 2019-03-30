@@ -4,7 +4,9 @@
 int main(int argc, char *argv[])
 {
     Constants::init();
+
     QApplication a(argc, argv);
+
     Widget w;
     w.show();
 
