@@ -23,6 +23,7 @@ public:
     explicit Widget(QWidget *parent = nullptr);
     ~Widget();
     void updateBackground();
+    void updateBorderPixmaps();
     void updateManaSymbolPixmaps();
     void updatescrollSymbolPixmaps();
     void updateFont();
@@ -39,6 +40,7 @@ public slots:
     void updateScroll();
     void updateType();
     void updateFlavorText();
+    void updateBorderColor();
     void openRarityAndSetSymbol();
     void updateIllustratorName();
     void updateSetNumber();
@@ -60,6 +62,8 @@ private:
     QList<QGraphicsTextItem*> scrollValues;
     QGraphicsTextItem* type;
     QGraphicsTextItem* flavor;
+    QMap<QString, QPixmap> borderPixmaps;
+    QGraphicsPixmapItem* border;
     QGraphicsPixmapItem* rarityAndSetSymbol;
     QGraphicsTextItem* illustratorName;
     QGraphicsTextItem* setNumber;

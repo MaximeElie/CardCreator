@@ -1,8 +1,10 @@
 #include "widget.h"
 #include "ui_widget.h"
+#include <QTextStream>
 
 Widget::Widget(QWidget *parent) : QWidget(parent), ui(new Ui::Widget) {
 
+    updateBorderPixmaps();
     updateManaSymbolPixmaps();
     updatescrollSymbolPixmaps();
 
@@ -11,6 +13,7 @@ Widget::Widget(QWidget *parent) : QWidget(parent), ui(new Ui::Widget) {
     rarityAndSetSymbol = scene->addPixmap(QPixmap());
     background = scene->addPixmap(QPixmap());
     updateBackground();
+    border = scene->addPixmap(QPixmap());
     actionPoints = scene->addText("");
     name = scene->addText("");
     type = scene->addText("");
@@ -50,6 +53,8 @@ Widget::Widget(QWidget *parent) : QWidget(parent), ui(new Ui::Widget) {
 
     connect(ui->flavorText, SIGNAL(textChanged()), this, SLOT(updateFlavorText()));
 
+    connect(ui->borderColor, SIGNAL(activated(QString)), this, SLOT(updateBorderColor()));
+
     connect(ui->rarityAndSetSymbol, SIGNAL(clicked()), this, SLOT(openRarityAndSetSymbol()));
     connect(ui->illustratorName, SIGNAL(textChanged(QString)), this, SLOT(updateIllustratorName()));
     connect(ui->setNumber, SIGNAL(valueChanged(int)), this, SLOT(updateSetNumber()));
@@ -67,6 +72,7 @@ Widget::~Widget() {
 void Widget::updateAll() {
 
     updateBackground();
+    updateBorderPixmaps();
     updateManaSymbolPixmaps();
     updatescrollSymbolPixmaps();
     updateFont();
@@ -75,6 +81,16 @@ void Widget::updateAll() {
 
 void Widget::updateBackground() {
     background->setPixmap(QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/background.png").scaled(Constants::cardSize())));
+}
+
+void Widget::updateBorderPixmaps() {
+    borderPixmaps.clear();
+
+    borderPixmaps.insert("green_white_grey", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/green_white_grey.png").scaled(Constants::cardSize())));
+    borderPixmaps.insert("black", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/black.png").scaled(Constants::cardSize())));
+    borderPixmaps.insert("red", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/red.png").scaled(Constants::cardSize())));
+    borderPixmaps.insert("purple", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/purple.png").scaled(Constants::cardSize())));
+    borderPixmaps.insert("blue_gold", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/blue_gold.png").scaled(Constants::cardSize())));
 }
 
 void Widget::updateManaSymbolPixmaps() {
@@ -114,6 +130,7 @@ void Widget::updateCard() {
     updateScroll();
     updateType();
     updateFlavorText();
+    updateBorderColor();
     updateRarityAndSetSymbol();
     updateIllustratorName();
     updateSetNumber();
@@ -148,7 +165,7 @@ void Widget::updateActionPoints() {
     updateText(actionPoints, QString::number(ui->actionPoints->value()), Constants::actionPointsRect(), Qt::AlignCenter);
 }
 
-void Widget::updateMana() {///////////////////////////////////////////////////
+void Widget::updateMana() {
 
     for(QGraphicsPixmapItem* item : manaSymbols) scene->removeItem(item);
     manaSymbols.clear();
@@ -161,10 +178,10 @@ void Widget::updateMana() {///////////////////////////////////////////////////
     for(int i = 0 ; i < ui->stoneQuarry->value() ; i++) manaSymbols.append(scene->addPixmap(manaSymbolPixmaps["stone_quarry"]));
     for(int i = 0 ; i < ui->colorless->value() ; i++) manaSymbols.append(scene->addPixmap(manaSymbolPixmaps["colorless"]));
 
-    int firstSymbolLeft = Constants::manaRect().right() - manaSymbols.count()*(Constants::manaSymbolSize().width()+5); ////////////////////////////////////////////////////////////////// 5
+    int firstSymbolLeft = Constants::manaRect().right() - manaSymbols.count()*(Constants::manaSymbolSize().width()+Constants::spaceBetweenManaSymbols());
 
     for(int i = 0 ; i < manaSymbols.count() ; i++) {
-        int symbolX = firstSymbolLeft + i*Constants::manaSymbolSize().width() + i*5;////////////////////////////////////////////////////////////////////////////////////////////////// 5
+        int symbolX = firstSymbolLeft + i*Constants::manaSymbolSize().width() + i*Constants::spaceBetweenManaSymbols();
         int symbolY = Constants::manaRect().y() + (Constants::manaRect().height()-Constants::manaSymbolSize().height())/2;
         manaSymbols[i]->setPos(symbolX,symbolY);
     }
@@ -191,9 +208,9 @@ void Widget::updatePicture() {
 void Widget::updateScroll() {//////////////////////////////////////////////////
 
     for(QGraphicsPixmapItem* item : scrollSymbols) scene->removeItem(item);
-    manaSymbols.clear();
+    scrollSymbols.clear();
     for(QGraphicsTextItem* item : scrollValues) scene->removeItem(item);
-    manaSymbols.clear();
+    scrollValues.clear();
 
     if(ui->attackPower->value()>0) {
         scrollSymbols.append(scene->addPixmap(scrollSymbolPixmaps["attack_power"]));
@@ -223,7 +240,7 @@ void Widget::updateScroll() {//////////////////////////////////////////////////
     if(scrollSymbols.isEmpty()) return;
 
     int symbolCaseWidth = Constants::scrollRect().width()/scrollSymbols.count();
-    int firstSymbolLeft = Constants::scrollRect().left() + symbolCaseWidth/2 - Constants::scrollSymbolAndNumberSize().width()/2;
+    int firstSymbolLeft = Constants::scrollRect().left() + symbolCaseWidth/2 - Constants::scrollSymbolSize().width();
 
     for(int i = 0 ; i < scrollSymbols.count() ; i++) {
         int symbolX = firstSymbolLeft + i*symbolCaseWidth;
@@ -260,6 +277,14 @@ void Widget::updateFlavorText() {/////////////////////////////////// centrer
     flavor->setPos(Constants::flavorTextRect().center().x() - boundingRect.width()/2, Constants::flavorTextRect().center().y() - boundingRect.height()/2);
 }
 
+void Widget::updateBorderColor() {
+    if(ui->borderColor->currentText() == "Green/White/Grey") border->setPixmap(borderPixmaps["green_white_grey"]);
+    else if(ui->borderColor->currentText() == "Black") border->setPixmap(borderPixmaps["black"]);
+    else if(ui->borderColor->currentText() == "Red") border->setPixmap(borderPixmaps["red"]);
+    else if(ui->borderColor->currentText() == "Purple") border->setPixmap(borderPixmaps["purple"]);
+    else if(ui->borderColor->currentText() == "Blue/Gold") border->setPixmap(borderPixmaps["blue_gold"]);
+}
+
 void Widget::openRarityAndSetSymbol() {
     QString fileName = QFileDialog::getOpenFileName(this, "Open set", QDir::homePath(), "Images (*.png *.jpg *.jpeg *.bmp *.gif)");
     if(!fileName.isEmpty()) {
@@ -286,7 +311,7 @@ void Widget::updateGoldCost() {
     updateText(goldCost, QString::number(ui->goldCost->value()), Constants::goldCostRect(), Qt::AlignCenter);
 }
 
-void Widget::options() {////////////////////////////////////////////
+void Widget::options() {
     optionsWindow = new Options(this);
     connect(optionsWindow, SIGNAL(optionsClosed()), this, SLOT(updateAll()));
     optionsWindow->show();

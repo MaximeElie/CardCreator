@@ -5,6 +5,7 @@
 #include <QCloseEvent>
 
 #include "positions.h"
+#include "constants.h"
 
 namespace Ui {
     class Options;
@@ -23,8 +24,11 @@ signals:
 
 private slots:
     void on_background_clicked();
-    void on_font_clicked();
-    void on_positions_clicked();
+    void on_greenWhiteGreyBorder_clicked();
+    void on_blackBorder_clicked();
+    void on_redBorder_clicked();
+    void on_purpleBorder_clicked();
+    void on_blueGoldBorder_clicked();
     void on_wood_clicked();
     void on_mysticNode_clicked();
     void on_weaponForge_clicked();
@@ -38,6 +42,11 @@ private slots:
     void on_rangedAttack_clicked();
     void on_magicAttack_clicked();
     void on_defense_clicked();
+    void on_systemFont_clicked();
+    void on_chooseSystemFont_currentFontChanged(QFont);
+    void on_customFont_clicked();
+    void on_openCustomFont_clicked();
+    void on_positions_clicked();
     void on_ok_clicked();
 
 private:

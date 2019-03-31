@@ -1,6 +1,11 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+#include <QApplication>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QFile>
+#include <QFont>
 #include <QSize>
 #include <QPoint>
 #include <QRect>
@@ -8,6 +13,12 @@
 class Constants {
 
 private:
+
+    static bool _returnScaledValues;
+
+    static bool _useCustomFont;
+    static int _fontComboBoxIndex;
+
     static QSizeF _cardSize;
 
     static QRectF _actionPointsRect;
@@ -23,8 +34,8 @@ private:
     static QRectF _goldCostRect;
 
     static QSizeF _manaSymbolSize;
+    static int _spaceBetweenManaSymbols;
     static QSizeF _scrollSymbolSize;
-    static QSizeF _scrollSymbolAndNumberSize;
 
     static QSizeF _cardSizeScaled;
 
@@ -37,7 +48,16 @@ private:
 
 public:
 
+    static void setReturnScaledValues(bool);
+
     static void init();
+    static void update(QJsonObject);
+    static void saveToJson();
+
+    static void setUseCustomFont(bool);
+    static bool useCustomFont();
+    static void setFontComboBoxIndex(int);
+    static int fontComboBoxIndex();
 
     static QRect actionPointsRect();
     static QRect manaRect();
@@ -52,8 +72,8 @@ public:
     static QRect goldCostRect();
 
     static QSize manaSymbolSize();
+    static int spaceBetweenManaSymbols();
     static QSize scrollSymbolSize();
-    static QSize scrollSymbolAndNumberSize();
 
     static QSize cardSize();
 
