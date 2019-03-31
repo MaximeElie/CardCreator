@@ -75,7 +75,6 @@ void Widget::updateAll() {
     updateBorderPixmaps();
     updateManaSymbolPixmaps();
     updatescrollSymbolPixmaps();
-    updateFont();
     updateCard();
 }
 
@@ -118,10 +117,6 @@ void Widget::updatescrollSymbolPixmaps() {
     scrollSymbolPixmaps.insert("defense", QPixmap::fromImage(QImage(qApp->applicationDirPath()+"/img/defense.png").scaled(Constants::scrollSymbolSize())));
 }
 
-void Widget::updateFont() { /////////////////////////////////////////////// faire
-
-}
-
 void Widget::updateCard() {
     updateActionPoints();
     updateMana();
@@ -137,15 +132,18 @@ void Widget::updateCard() {
     updateGoldCost();
 }
 
-void updateText(QGraphicsTextItem* item, QString text, QRect rect, Qt::Alignment alignment) {
+void updateText(QGraphicsTextItem* item, QString text, QRect rect, Qt::Alignment alignment, QString fontFamily = Constants::textFontFamily()) {
 
     QRectF boundingRect;
 
     item->setPlainText(text);
-    item->setFont(QFont("Arial", 100));
+    QFont font(fontFamily);
+    font.setPixelSize(rect.height());
+    item->setFont(font);
     boundingRect = item->boundingRect();
-    while(boundingRect.width()>rect.width() || boundingRect.height()>rect.height()) {
-        item->setFont(QFont("Arial", item->font().pointSize()-1));
+    while((boundingRect.width()>rect.width() || boundingRect.height()>rect.height()) && font.pixelSize() > 0) {
+        font.setPixelSize(font.pixelSize()-1);
+        item->setFont(font);
         boundingRect = item->boundingRect();
     }
 
@@ -162,7 +160,7 @@ void updateText(QGraphicsTextItem* item, QString text, QRect rect, Qt::Alignment
 }
 
 void Widget::updateActionPoints() {
-    updateText(actionPoints, QString::number(ui->actionPoints->value()), Constants::actionPointsRect(), Qt::AlignCenter);
+    updateText(actionPoints, QString::number(ui->actionPoints->value()), Constants::actionPointsRect(), Qt::AlignCenter, Constants::numberFontFamily());
 }
 
 void Widget::updateMana() {
@@ -205,7 +203,7 @@ void Widget::updatePicture() {
     picture->setPos(Constants::pictureRect().topLeft());
 }
 
-void Widget::updateScroll() {//////////////////////////////////////////////////
+void Widget::updateScroll() {
 
     for(QGraphicsPixmapItem* item : scrollSymbols) scene->removeItem(item);
     scrollSymbols.clear();
@@ -246,8 +244,9 @@ void Widget::updateScroll() {//////////////////////////////////////////////////
         int symbolX = firstSymbolLeft + i*symbolCaseWidth;
         int symbolY = Constants::scrollRect().y() + (Constants::scrollRect().height()-Constants::scrollSymbolSize().height())/2;
         scrollSymbols[i]->setPos(symbolX,symbolY);
-        scrollValues[i]->setFont(QFont("Arial", 15));////////////////////////////////////////////////////////////////////////////////////////////////////////// taille police auto
-        scrollValues[i]->setPos(symbolX+Constants::scrollSymbolSize().width(),symbolY); ////////////////////////////////////////////////////////////////////// position y auto
+
+        QRect valueRect(symbolX+Constants::scrollSymbolSize().width(), Constants::scrollRect().y(), symbolCaseWidth-Constants::scrollSymbolSize().width(), Constants::scrollRect().height());
+        updateText(scrollValues[i], scrollValues[i]->toPlainText(), valueRect, Qt::AlignLeft, Constants::numberFontFamily());
     }
 }
 
@@ -264,16 +263,20 @@ void Widget::updateFlavorText() {/////////////////////////////////// centrer
 
     flavor->setPlainText(ui->flavorText->toPlainText());
     flavor->setTextWidth(-1);
-    flavor->setFont(QFont("Arial", 40));
+    QFont font(Constants::textFontFamily());
+    font.setPixelSize(Constants::flavorTextRect().height()/4);
+    flavor->setFont(font);
     boundingRect = flavor->boundingRect();
     if(boundingRect.width()>Constants::flavorTextRect().width()) {
         flavor->setTextWidth(Constants::flavorTextRect().width());
         boundingRect = flavor->boundingRect();
-        while(boundingRect.height()>Constants::flavorTextRect().height()) {
-            flavor->setFont(QFont("Arial", flavor->font().pointSize()-1));
+        while(boundingRect.height()>Constants::flavorTextRect().height() && font.pixelSize() > 0) {
+            font.setPixelSize(font.pixelSize()-1);
+            flavor->setFont(font);
             boundingRect = flavor->boundingRect();
         }
     }
+
     flavor->setPos(Constants::flavorTextRect().center().x() - boundingRect.width()/2, Constants::flavorTextRect().center().y() - boundingRect.height()/2);
 }
 
@@ -304,11 +307,11 @@ void Widget::updateIllustratorName() {
 void Widget::updateSetNumber() {
     ui->setNumber->setMaximum(ui->setNumberTotal->value());
     QString setNumberStr = QString::number(ui->setNumber->value()) + " / " + QString::number(ui->setNumberTotal->value());
-    updateText(setNumber, setNumberStr, Constants::setNumberRect(), Qt::AlignRight);
+    updateText(setNumber, setNumberStr, Constants::setNumberRect(), Qt::AlignRight, Constants::numberFontFamily());
 }
 
 void Widget::updateGoldCost() {
-    updateText(goldCost, QString::number(ui->goldCost->value()), Constants::goldCostRect(), Qt::AlignCenter);
+    updateText(goldCost, QString::number(ui->goldCost->value()), Constants::goldCostRect(), Qt::AlignCenter, Constants::numberFontFamily());
 }
 
 void Widget::options() {
@@ -320,7 +323,11 @@ void Widget::options() {
 
 void Widget::save() {
     QString fileName = QFileDialog::getSaveFileName(this, "Save Scene", ui->name->text(), "Image (*.png)");
-    QPixmap pixMap = ui->graphicsView->grab();;
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// Recréer image au lieu de la rescale
+    Constants::setReturnScaledValues(false);
+    QPixmap pixMap = ui->graphicsView->grab().scaled(Constants::cardSize());
+    Constants::setReturnScaledValues(true);
     ui->graphicsView->grab();
     pixMap.save(fileName);
 }

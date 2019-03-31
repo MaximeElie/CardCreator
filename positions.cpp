@@ -158,7 +158,7 @@ void Positions::on_validate_clicked() {
     tmp["h"] = ui->manaSymbolH->value();
     obj["manaSymbol"] = tmp;
 
-    tmp["spaceBetweenManaSymbols"] = ui->spaceBetweenManaSymbols->value();
+    obj["spaceBetweenManaSymbols"] = ui->spaceBetweenManaSymbols->value();
 
     tmp["w"] = ui->scrollSymbolW->value();
     tmp["h"] = ui->scrollSymbolH->value();

@@ -1,21 +1,19 @@
 #include "options.h"
 #include "ui_options.h"
 
-#include <QFileDialog>
-
 Options::Options(QWidget *parent) : QWidget(parent, Qt::Tool), ui(new Ui::Options) {
     ui->setupUi(this);
 
-    if(Constants::useCustomFont()) {
-        ui->customFont->setChecked(true);
-        ui->chooseSystemFont->setEnabled(false);
-    }
-    else {
-        ui->systemFont->setChecked(true);
-        ui->openCustomFont->setEnabled(false);
-    }
+    ui->chooseTextFont->setCurrentIndex(Constants::textFontComboBoxIndex());
+    ui->chooseNumberFont->setCurrentIndex(Constants::numberFontComboBoxIndex());
 
-    ui->chooseSystemFont->setCurrentIndex(Constants::fontComboBoxIndex());
+    ui->numberFontEnabled->setChecked(Constants::isNumberFontEnabled());
+    ui->chooseNumberFont->setEnabled(Constants::isNumberFontEnabled());
+
+    ui->label_1->hide();
+    ui->numberFontEnabled->hide();
+    ui->label_2->hide();
+    ui->chooseNumberFont->hide();
 }
 
 Options::~Options() {
@@ -53,19 +51,25 @@ void Options::on_rangedAttack_clicked() { addImage("ranged_attack"); }
 void Options::on_magicAttack_clicked() { addImage("magic_attack"); }
 void Options::on_defense_clicked() { addImage("defense"); }
 
-void Options::on_systemFont_clicked() { ui->chooseSystemFont->setEnabled(true); ui->openCustomFont->setEnabled(false); }
-void Options::on_chooseSystemFont_currentFontChanged(QFont) {
+void Options::on_numberFontEnabled_stateChanged(int) { ui->chooseNumberFont->setEnabled(ui->numberFontEnabled->isChecked()); }
 
-}
-
-void Options::on_customFont_clicked() { ui->chooseSystemFont->setEnabled(false); ui->openCustomFont->setEnabled(true); }
-void Options::on_openCustomFont_clicked() {
-    QString source = QFileDialog::getOpenFileName(this, "Open font", QDir::homePath(), "Fonts (*.ttf)");
+void Options::on_addCustomFont_clicked() {
+    QString source = QFileDialog::getOpenFileName(this, "Open font", QDir::homePath(), "Fonts (*.ttf *.ttc *.otf)");
     if(source.isEmpty()) return;
 
-    QString destination = qApp->applicationDirPath()+"/font.ttf";
+
+    QString destination = qApp->applicationDirPath()+"/fonts/"+source.split("/").last();
+
     if(QFile::exists(destination)) QFile::remove(destination);
     QFile::copy(source, destination);
+
+    int id = QFontDatabase::addApplicationFont(source);
+    if(id == -1) return;
+    QStringList families = QFontDatabase::applicationFontFamilies(id);
+    if(families.isEmpty()) return;
+    int index = ui->chooseTextFont->findText(families.first());
+    if(index == -1) return;
+    ui->chooseTextFont->setCurrentIndex(index);
 }
 
 void Options::on_positions_clicked() {
@@ -77,8 +81,11 @@ void Options::on_positions_clicked() {
 void Options::on_ok_clicked() { close(); }
 
 void Options::closeEvent(QCloseEvent* event) {
-    Constants::setUseCustomFont(ui->customFont->isChecked());
-    Constants::setFontComboBoxIndex(ui->chooseSystemFont->currentIndex());
+    Constants::setTextFontComboBoxIndex(ui->chooseTextFont->currentIndex());
+    Constants::setTextFontFamily(ui->chooseTextFont->currentText());
+    Constants::setNumberFontComboBoxIndex(ui->chooseNumberFont->currentIndex());
+    Constants::setNumberFontFamily(ui->chooseNumberFont->currentText());
+    Constants::setNumberFontEnabled(ui->numberFontEnabled->isChecked());
     Constants::saveToJson();
     emit optionsClosed();
     event->accept();

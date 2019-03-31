@@ -2,8 +2,11 @@
 
 bool Constants::_returnScaledValues = true;
 
-bool Constants::_useCustomFont;
-int Constants::_fontComboBoxIndex;
+int Constants::_textFontComboBoxIndex;
+QString Constants::_textFontFamily;
+int Constants::_numberFontComboBoxIndex;
+QString Constants::_numberFontFamily;
+bool Constants::_numberFontEnabled;
 
 QSizeF Constants::_cardSize;
 QRectF Constants::_actionPointsRect;
@@ -24,14 +27,17 @@ QSizeF Constants::_scrollSymbolSize;
 
 QSizeF Constants::_cardSizeScaled;
 
+#include <QTextStream>
+
 void Constants::init() {
 
-    QFile file(qApp->applicationDirPath()+"/data.json");
-
-    if (!file.open(QIODevice::ReadOnly)) {
-        qWarning("Couldn't load data.");
-        return;
+    QDir dir(qApp->applicationDirPath()+"/fonts/");
+    for(QString fontFile : dir.entryList(QStringList() << "*.ttf" << "*.ttc" << "*.otf",QDir::Files)) {
+        QFontDatabase::addApplicationFont(dir.path()+"/"+fontFile);
     }
+
+    QFile file(qApp->applicationDirPath()+"/data.json");
+    if (!file.open(QIODevice::ReadOnly)) return;
 
     QByteArray data = file.readAll();
     QJsonDocument doc(QJsonDocument::fromJson(data));
@@ -44,8 +50,11 @@ void Constants::setReturnScaledValues(bool b) { _returnScaledValues = b; }
 
 void Constants::update(QJsonObject obj) {
 
-    _useCustomFont = obj["useCustomFont"].toBool();
-    _fontComboBoxIndex = obj["fontComboBoxIndex"].toInt();
+    _textFontComboBoxIndex = obj["textFontComboBoxIndex"].toInt();
+    _textFontFamily = obj["textFontFamily"].toString();
+    _numberFontComboBoxIndex = obj["numberFontComboBoxIndex"].toInt();
+    _numberFontFamily = obj["numberFontFamily"].toString();
+    _numberFontEnabled = obj["numberFontEnabled"].toBool();
 
     _cardSize.setWidth(obj["card"].toObject()["w"].toInt());
     _cardSize.setHeight(obj["card"].toObject()["h"].toInt());
@@ -126,8 +135,11 @@ void Constants::saveToJson() {
     QJsonObject obj;
     QJsonObject tmp;
 
-    obj["useCustomFont"] = _useCustomFont;
-    obj["fontComboBoxIndex"] = _fontComboBoxIndex;
+    obj["textFontComboBoxIndex"] = _textFontComboBoxIndex;
+    obj["textFontFamily"] = _textFontFamily;
+    obj["numberFontComboBoxIndex"] = _numberFontComboBoxIndex;
+    obj["numberFontFamily"] = _numberFontFamily;
+    obj["numberFontEnabled"] = _numberFontEnabled;
 
     tmp["w"] = _cardSize.width();
     tmp["h"] = _cardSize.height();
@@ -215,10 +227,16 @@ void Constants::saveToJson() {
     file.write(doc.toJson());
 }
 
-void Constants::setUseCustomFont(bool b) { _useCustomFont = b; }
-bool Constants::useCustomFont() { return _useCustomFont; }
-void Constants::setFontComboBoxIndex(int index) { _fontComboBoxIndex = index; }
-int Constants::fontComboBoxIndex() { return _fontComboBoxIndex; }
+void Constants::setTextFontComboBoxIndex(int index) { _textFontComboBoxIndex = index; }
+int Constants::textFontComboBoxIndex() { return _textFontComboBoxIndex; }
+void Constants::setTextFontFamily(QString fontFamily) { _textFontFamily = fontFamily; }
+QString Constants::textFontFamily() { return _textFontFamily; }
+void Constants::setNumberFontComboBoxIndex(int index) { _numberFontComboBoxIndex = index; }
+int Constants::numberFontComboBoxIndex() { return _numberFontComboBoxIndex; }
+void Constants::setNumberFontFamily(QString fontFamily) { _numberFontFamily = fontFamily; }
+QString Constants::numberFontFamily() { return _numberFontEnabled ? _numberFontFamily : _textFontFamily; }
+void Constants::setNumberFontEnabled(bool b) { _numberFontEnabled = b; }
+bool Constants::isNumberFontEnabled() { return _numberFontEnabled; }
 
 double Constants::scaleFactorX() { return _cardSizeScaled.width()/_cardSize.width(); }
 double Constants::scaleFactorY() { return _cardSizeScaled.height()/_cardSize.height(); }

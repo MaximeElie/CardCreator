@@ -5,6 +5,8 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QFile>
+#include <QDir>
+#include <QFontDatabase>
 #include <QFont>
 #include <QSize>
 #include <QPoint>
@@ -16,8 +18,11 @@ private:
 
     static bool _returnScaledValues;
 
-    static bool _useCustomFont;
-    static int _fontComboBoxIndex;
+    static int _textFontComboBoxIndex;
+    static QString _textFontFamily;
+    static int _numberFontComboBoxIndex;
+    static QString _numberFontFamily;
+    static bool _numberFontEnabled;
 
     static QSizeF _cardSize;
 
@@ -54,10 +59,16 @@ public:
     static void update(QJsonObject);
     static void saveToJson();
 
-    static void setUseCustomFont(bool);
-    static bool useCustomFont();
-    static void setFontComboBoxIndex(int);
-    static int fontComboBoxIndex();
+    static void setTextFontComboBoxIndex(int);
+    static int textFontComboBoxIndex();
+    static void setTextFontFamily(QString);
+    static QString textFontFamily();
+    static void setNumberFontComboBoxIndex(int);
+    static int numberFontComboBoxIndex();
+    static void setNumberFontFamily(QString);
+    static QString numberFontFamily();
+    static void setNumberFontEnabled(bool);
+    static bool isNumberFontEnabled();
 
     static QRect actionPointsRect();
     static QRect manaRect();

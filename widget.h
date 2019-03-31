@@ -26,7 +26,6 @@ public:
     void updateBorderPixmaps();
     void updateManaSymbolPixmaps();
     void updatescrollSymbolPixmaps();
-    void updateFont();
     void updateCard();
     void updatePicture();
     void updateRarityAndSetSymbol();

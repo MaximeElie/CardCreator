@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QCloseEvent>
+#include <QFileDialog>
 
 #include "positions.h"
 #include "constants.h"
@@ -42,10 +43,8 @@ private slots:
     void on_rangedAttack_clicked();
     void on_magicAttack_clicked();
     void on_defense_clicked();
-    void on_systemFont_clicked();
-    void on_chooseSystemFont_currentFontChanged(QFont);
-    void on_customFont_clicked();
-    void on_openCustomFont_clicked();
+    void on_numberFontEnabled_stateChanged(int);
+    void on_addCustomFont_clicked();
     void on_positions_clicked();
     void on_ok_clicked();
 
