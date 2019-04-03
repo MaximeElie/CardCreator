@@ -4,20 +4,15 @@
 
 Widget::Widget(QWidget *parent) : QWidget(parent), ui(new Ui::Widget) {
 
-    updateBorderPixmaps();
-    updateManaSymbolPixmaps();
-    updatescrollSymbolPixmaps();
-
     scene = new QGraphicsScene(this);
     picture = scene->addPixmap(QPixmap());
     rarityAndSetSymbol = scene->addPixmap(QPixmap());
     background = scene->addPixmap(QPixmap());
-    updateBackground();
     border = scene->addPixmap(QPixmap());
     actionPoints = scene->addText("");
     name = scene->addText("");
     type = scene->addText("");
-    flavor = scene->addText("");
+    flavorText = new FlavorText(scene);
     illustratorName = scene->addText("");
     setNumber = scene->addText("");
     goldCost = scene->addText("");
@@ -25,7 +20,7 @@ Widget::Widget(QWidget *parent) : QWidget(parent), ui(new Ui::Widget) {
     ui->setupUi(this);
     ui->graphicsView->setScene(scene);
 
-    updateCard();
+    updateAll();
 
     connect(ui->actionPoints, SIGNAL(valueChanged(int)), this, SLOT(updateActionPoints()));
 
@@ -63,6 +58,9 @@ Widget::Widget(QWidget *parent) : QWidget(parent), ui(new Ui::Widget) {
 
     connect(ui->options, SIGNAL(clicked()), this, SLOT(options()));
     connect(ui->save, SIGNAL(clicked()), this, SLOT(save()));
+
+    connect(ui->vertical, SIGNAL(clicked()), this, SLOT(setOrientation()));
+    connect(ui->horizontal, SIGNAL(clicked()), this, SLOT(setOrientation()));
 }
 
 Widget::~Widget() {
@@ -257,27 +255,8 @@ void Widget::updateType() {
     updateText(type, typeStr, Constants::typeRect(), Qt::AlignCenter);
 }
 
-void Widget::updateFlavorText() {/////////////////////////////////// centrer
-
-    QRectF boundingRect;
-
-    flavor->setPlainText(ui->flavorText->toPlainText());
-    flavor->setTextWidth(-1);
-    QFont font(Constants::textFontFamily());
-    font.setPixelSize(Constants::flavorTextRect().height()/4);
-    flavor->setFont(font);
-    boundingRect = flavor->boundingRect();
-    if(boundingRect.width()>Constants::flavorTextRect().width()) {
-        flavor->setTextWidth(Constants::flavorTextRect().width());
-        boundingRect = flavor->boundingRect();
-        while(boundingRect.height()>Constants::flavorTextRect().height() && font.pixelSize() > 0) {
-            font.setPixelSize(font.pixelSize()-1);
-            flavor->setFont(font);
-            boundingRect = flavor->boundingRect();
-        }
-    }
-
-    flavor->setPos(Constants::flavorTextRect().center().x() - boundingRect.width()/2, Constants::flavorTextRect().center().y() - boundingRect.height()/2);
+void Widget::updateFlavorText() {
+    flavorText->update(ui->flavorText->toPlainText(), Constants::isFlavorCentered());
 }
 
 void Widget::updateBorderColor() {
@@ -330,4 +309,9 @@ void Widget::save() {
     Constants::setReturnScaledValues(true);
     ui->graphicsView->grab();
     pixMap.save(fileName);
+}
+
+void Widget::setOrientation() {
+    if(ui->vertical->isChecked()) orientation = Qt::Vertical;
+    else orientation = Qt::Horizontal;
 }

@@ -10,6 +10,7 @@
 
 #include "options.h"
 #include "constants.h"
+#include "flavortext.h"
 
 namespace Ui {
     class Widget;
@@ -46,6 +47,7 @@ public slots:
     void updateGoldCost();
     void options();
     void save();
+    void setOrientation();
 
 private:
     Ui::Widget* ui;
@@ -60,7 +62,7 @@ private:
     QList<QGraphicsPixmapItem*> scrollSymbols;
     QList<QGraphicsTextItem*> scrollValues;
     QGraphicsTextItem* type;
-    QGraphicsTextItem* flavor;
+    FlavorText* flavorText;
     QMap<QString, QPixmap> borderPixmaps;
     QGraphicsPixmapItem* border;
     QGraphicsPixmapItem* rarityAndSetSymbol;
@@ -68,6 +70,7 @@ private:
     QGraphicsTextItem* setNumber;
     QGraphicsTextItem* goldCost;
     Options* optionsWindow;
+    Qt::Orientation orientation;
 };
 
 #endif // WIDGET_H

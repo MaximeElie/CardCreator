@@ -14,6 +14,9 @@ Options::Options(QWidget *parent) : QWidget(parent, Qt::Tool), ui(new Ui::Option
     ui->numberFontEnabled->hide();
     ui->label_2->hide();
     ui->chooseNumberFont->hide();
+
+    ui->flavorTextCentered->setChecked(Constants::isFlavorCentered());
+    ui->flavorTextAmountOfLinesAtWidestFontSize->setValue(Constants::flavorTextAmountOfLinesAtWidestFontSize());
 }
 
 Options::~Options() {
@@ -86,6 +89,8 @@ void Options::closeEvent(QCloseEvent* event) {
     Constants::setNumberFontComboBoxIndex(ui->chooseNumberFont->currentIndex());
     Constants::setNumberFontFamily(ui->chooseNumberFont->currentText());
     Constants::setNumberFontEnabled(ui->numberFontEnabled->isChecked());
+    Constants::setFlavorTextAmountOfLinesAtWidestFontSize(ui->flavorTextAmountOfLinesAtWidestFontSize->value());
+    Constants::setFlavorCentered(ui->flavorTextCentered->isChecked());
     Constants::saveToJson();
     emit optionsClosed();
     event->accept();

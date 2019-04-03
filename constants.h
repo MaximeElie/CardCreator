@@ -33,6 +33,8 @@ private:
     static QRectF _scrollRect;
     static QRectF _typeRect;
     static QRectF _flavorTextRect;
+    static bool _flavorCentered;
+    static int _flavorTextAmountOfLinesAtWidestFontSize;
     static QRectF _raritySetSymbolRect;
     static QRectF _illustratorRect;
     static QRectF _setNumberRect;
@@ -77,6 +79,10 @@ public:
     static QRect scrollRect();
     static QRect typeRect();
     static QRect flavorTextRect();
+    static void setFlavorCentered(bool);
+    static bool isFlavorCentered();
+    static void setFlavorTextAmountOfLinesAtWidestFontSize(int);
+    static int flavorTextAmountOfLinesAtWidestFontSize();
     static QRect raritySetSymbolRect();
     static QRect illustratorRect();
     static QRect setNumberRect();

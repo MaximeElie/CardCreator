@@ -29,13 +29,15 @@ SOURCES += \
         widget.cpp \
     constants.cpp \
     options.cpp \
-    positions.cpp
+    positions.cpp \
+    flavortext.cpp
 
 HEADERS += \
         widget.h \
     constants.h \
     options.h \
-    positions.h
+    positions.h \
+    flavortext.h
 
 FORMS += \
         widget.ui \

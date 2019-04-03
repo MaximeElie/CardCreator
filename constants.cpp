@@ -16,6 +16,8 @@ QRectF Constants::_pictureRect;
 QRectF Constants::_scrollRect;
 QRectF Constants::_typeRect;
 QRectF Constants::_flavorTextRect;
+bool Constants::_flavorCentered;
+int Constants::_flavorTextAmountOfLinesAtWidestFontSize;
 QRectF Constants::_raritySetSymbolRect;
 QRectF Constants::_illustratorRect;
 QRectF Constants::_setNumberRect;
@@ -93,6 +95,9 @@ void Constants::update(QJsonObject obj) {
     _flavorTextRect.setY(obj["flavorText"].toObject()["y"].toInt());
     _flavorTextRect.setWidth(obj["flavorText"].toObject()["w"].toInt());
     _flavorTextRect.setHeight(obj["flavorText"].toObject()["h"].toInt());
+
+    _flavorCentered = obj["flavorCentered"].toBool();
+    _flavorTextAmountOfLinesAtWidestFontSize = obj["flavorTextAmountOfLinesAtWidestFontSize"].toInt();
 
     _raritySetSymbolRect.setX(obj["rarityAndSetSymbol"].toObject()["x"].toInt());
     _raritySetSymbolRect.setY(obj["rarityAndSetSymbol"].toObject()["y"].toInt());
@@ -187,6 +192,9 @@ void Constants::saveToJson() {
     tmp["h"] = _flavorTextRect.height();
     obj["flavorText"] = tmp;
 
+    obj["flavorCentered"] = _flavorCentered;;
+    obj["flavorTextAmountOfLinesAtWidestFontSize"] = _flavorTextAmountOfLinesAtWidestFontSize;
+
     tmp["x"] = _raritySetSymbolRect.x();
     tmp["y"] = _raritySetSymbolRect.y();
     tmp["w"] = _raritySetSymbolRect.width();
@@ -251,6 +259,10 @@ QRect Constants::pictureRect() { return scaleRect(_pictureRect); }
 QRect Constants::scrollRect() {return scaleRect(_scrollRect); }
 QRect Constants::typeRect() { return scaleRect(_typeRect); }
 QRect Constants::flavorTextRect() { return scaleRect(_flavorTextRect); }
+void Constants::setFlavorCentered(bool b) { _flavorCentered = b; }
+bool Constants::isFlavorCentered() { return _flavorCentered; }
+void Constants::setFlavorTextAmountOfLinesAtWidestFontSize(int nb) { _flavorTextAmountOfLinesAtWidestFontSize = nb; }
+int Constants::flavorTextAmountOfLinesAtWidestFontSize() { return _flavorTextAmountOfLinesAtWidestFontSize; }
 QRect Constants::raritySetSymbolRect() { return scaleRect(_raritySetSymbolRect); }
 QRect Constants::illustratorRect() { return scaleRect(_illustratorRect); }
 QRect Constants::setNumberRect() { return scaleRect(_setNumberRect); }
